@@ -68,8 +68,8 @@ class Spider_MD(scrapy.Spider):
         # self.logger.critical("--------------------------------------------------")
 
         # # Your MongoDB insertion code here
-        # # write to mongo 
-        # insert_data(title, url, markdown_content)
+        # write to mongo 
+        insert_data(title, url, markdown_content)
 
         # Follow links if not reached the depth limit and excluding header/footer links
         if response.meta.get('depth', 0) < self.depth_limit:
