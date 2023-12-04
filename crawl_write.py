@@ -7,7 +7,7 @@ from mongo import *
 class Spider_MD(scrapy.Spider):
     name = 'md_to_mongo'
     custom_settings = {
-        'DEPTH_LIMIT': 1, 
+        'DEPTH_LIMIT': 4, 
         "LOG_LEVEL": "CRITICAL",
     }
 
