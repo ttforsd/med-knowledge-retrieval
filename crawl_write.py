@@ -2,30 +2,37 @@ import scrapy
 from bs4 import BeautifulSoup
 from markdownify import markdownify as md
 from scrapy.crawler import CrawlerProcess
-from mongo import * 
+from mongo import *
 
 class Spider_MD(scrapy.Spider):
     name = 'md_to_mongo'
+
     custom_settings = {
-        'DEPTH_LIMIT': 4, 
-        "LOG_LEVEL": "CRITICAL",
+        'LOG_LEVEL': 'CRITICAL',  # Set the log level to CRITICAL
     }
 
-    def __init__(self, url=None, *args, **kwargs):
+    def __init__(self, url=None, depth_limit=4, *args, **kwargs):
         super(Spider_MD, self).__init__(*args, **kwargs)
         self.start_urls = [url] if url else []
         self.visited_urls = set()  # Set to store visited URLs
+        self.depth_limit = int(depth_limit)
 
     def parse(self, response):
         # Extracting the URL and response body (HTML content)
         url = response.url
+
+        # Check if the response is a PDF, if so, skip processing
+        content_type = response.headers.get('Content-Type', b'').decode('utf-8').lower()
+        if 'application/pdf' in content_type:
+            self.logger.critical(f"Skipping PDF URL: {url}")
+            return
 
         # If URL is already visited, skip parsing and following links
         if url in self.visited_urls:
             return
         else:
             self.visited_urls.add(url)  # Add URL to visited set
-            self.logger.info(f"Visited URL: {url}")
+            self.logger.critical(f"Visited URL: {url}")
 
         # Parse HTML content using BeautifulSoup
         soup = BeautifulSoup(response.body, 'html.parser')
@@ -56,23 +63,24 @@ class Spider_MD(scrapy.Spider):
         # print(markdown_content)
         # print("--------------------------------------------------")
         # # Store data in MongoDB or print it for testing
-        # self.logger.info(f"Title: {title}")
-        # self.logger.info(markdown_content)
-        self.logger.info("--------------------------------------------------")
+        # self.logger.critical(f"Title: {title}")
+        # # self.logger.critical(markdown_content)
+        # self.logger.critical("--------------------------------------------------")
 
-        # Your MongoDB insertion code here
-        # write to mongo 
-        insert_data(title, url, markdown_content)
+        # # Your MongoDB insertion code here
+        # # write to mongo 
+        # insert_data(title, url, markdown_content)
 
         # Follow links if not reached the depth limit and excluding header/footer links
-        if response.meta.get('depth') < self.custom_settings['DEPTH_LIMIT']:
+        if response.meta.get('depth', 0) < self.depth_limit:
             for next_page in response.xpath('//a[not(ancestor::header) and not(ancestor::footer) and not(contains(@class, "breadcrumbs"))]/@href').getall():
-                yield response.follow(next_page, self.parse)
+                yield response.follow(next_page, self.parse, meta={'depth': response.meta.get('depth', 0) + 1})
 
 # URL to crawl
 url_to_crawl = "https://cks.nice.org.uk/topics/"
+depth_limit_to_use = 3  # Set your desired depth limit here
 
 # Run spider
 process = CrawlerProcess()
-process.crawl(Spider_MD, url=url_to_crawl)
+process.crawl(Spider_MD, url=url_to_crawl, depth_limit=depth_limit_to_use)
 process.start()
