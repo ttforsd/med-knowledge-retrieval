@@ -15,6 +15,9 @@ client = pymongo.MongoClient(DB_ADDR, username=DB_USER, password=DB_PW)
 db = client.web_scraping
 collection = db.nice_cks
 
+# index 
+# a = collection.create_index([("title", pymongo.TEXT)])
+# print(a)
 
 def insert_data(title, url, content):
     # Insert data into MongoDB
