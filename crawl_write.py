@@ -10,8 +10,8 @@ class Spider_MD(scrapy.Spider):
     custom_settings = {
         'LOG_LEVEL': 'CRITICAL',  # Set the log level to CRITICAL
     }
-
-    def __init__(self, url=None, depth_limit=4, *args, **kwargs):
+    allowed_domains = ['cks.nice.org.uk', "www.gov.uk", "www.nhs.uk"]
+    def __init__(self, url=None, depth_limit=3, *args, **kwargs):
         super(Spider_MD, self).__init__(*args, **kwargs)
         self.start_urls = [url] if url else []
         self.visited_urls = set()  # Set to store visited URLs
