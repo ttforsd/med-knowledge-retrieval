@@ -49,9 +49,13 @@ class Spider_MD(scrapy.Spider):
         for footer in soup.find_all('footer'):
             footer.decompose()
 
-        # Remove script tags
+        # Remove script
         for script in soup.find_all('script'):
             script.decompose()
+
+        # Remove content with class="Layout-module--eula--b468d"
+        for eula_content in soup.find_all(class_='Layout-module--eula--b468d'):
+            eula_content.decompose()
 
         # Convert parsed HTML to Markdown
         parsed_html = str(soup)
@@ -71,9 +75,9 @@ class Spider_MD(scrapy.Spider):
         # write to mongo 
         insert_data(title, url, markdown_content)
 
-        # Follow links if not reached the depth limit and excluding header/footer links
+        # Follow links if not reached the depth limit and excluding header/footer, breadcrumbs links
         if response.meta.get('depth', 0) < self.depth_limit:
-            for next_page in response.xpath('//a[not(ancestor::header) and not(ancestor::footer) and not(contains(@class, "breadcrumbs"))]/@href').getall():
+            for next_page in response.xpath('//a[not(ancestor::header) and not(ancestor::footer) and not(contains(@class, "breadcrumbs")) and not(ancestor::div[contains(@class, "Layout-module--eula--b468d")])]/@href').getall():
                 yield response.follow(next_page, self.parse, meta={'depth': response.meta.get('depth', 0) + 1})
 
 # URL to crawl
