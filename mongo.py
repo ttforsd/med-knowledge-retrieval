@@ -13,9 +13,11 @@ DB_PW = os.getenv("DB_PW")
 client = pymongo.MongoClient(DB_ADDR, username=DB_USER, password=DB_PW)
 # Create database, web_scraping, and collection, nice_cks
 db = client.web_scraping
-collection = db.nice_cks
+# collection = db.nice_cks
 
-# index 
+collection = db.nice_bnf_treatment
+
+# # index
 # a = collection.create_index([("title", pymongo.TEXT)])
 # print(a)
 

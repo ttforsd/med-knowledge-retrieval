@@ -10,7 +10,8 @@ class Spider_MD(scrapy.Spider):
     custom_settings = {
         'LOG_LEVEL': 'CRITICAL',  # Set the log level to CRITICAL
     }
-    allowed_domains = ['cks.nice.org.uk', "www.gov.uk", "www.nhs.uk"]
+    # allowed_domains = ['cks.nice.org.uk', "www.gov.uk", "www.nhs.uk"]
+    allowed_domains = ['bnf.nice.org.uk']
     def __init__(self, url=None, depth_limit=3, *args, **kwargs):
         super(Spider_MD, self).__init__(*args, **kwargs)
         self.start_urls = [url] if url else []
@@ -53,17 +54,23 @@ class Spider_MD(scrapy.Spider):
         for script in soup.find_all('script'):
             script.decompose()
 
+
+
         # Remove content with class="Layout-module--eula--b468d"
         for eula_content in soup.find_all(class_='Layout-module--eula--b468d'):
             eula_content.decompose()
 
-        # Convert parsed HTML to Markdown
-        parsed_html = str(soup)
-        markdown_content = md(parsed_html)
-
         # Extract title from the page
         title = soup.title.text if soup.title else "Untitled"
         print(f"Title: {title}")
+
+        # remove head
+        for head in soup.find_all('head'):
+            head.decompose()
+
+        # Convert parsed HTML to Markdown
+        parsed_html = str(soup)
+        markdown_content = md(parsed_html)
         # print(markdown_content)
         # print("--------------------------------------------------")
         # # Store data in MongoDB or print it for testing
@@ -71,7 +78,6 @@ class Spider_MD(scrapy.Spider):
         # # self.logger.critical(markdown_content)
         # self.logger.critical("--------------------------------------------------")
 
-        # # Your MongoDB insertion code here
         # write to mongo 
         insert_data(title, url, markdown_content)
 
@@ -81,8 +87,8 @@ class Spider_MD(scrapy.Spider):
                 yield response.follow(next_page, self.parse, meta={'depth': response.meta.get('depth', 0) + 1})
 
 # URL to crawl
-url_to_crawl = "https://cks.nice.org.uk/topics/"
-depth_limit_to_use = 3  # Set your desired depth limit here
+url_to_crawl = "https://bnf.nice.org.uk/treatment-summaries/"
+depth_limit_to_use = 1  # Set your desired depth limit here
 
 # Run spider
 process = CrawlerProcess()

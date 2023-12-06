@@ -16,11 +16,11 @@ chromadb_ip = os.environ["CHROMA_DB_IP"]
 chromadb_port = os.environ["CHROMA_DB_PORT"]
 client = chromadb.HttpClient(settings=Settings(allow_reset=True), host=chromadb_ip, port=chromadb_port)
 
+print(collection)
 
-# delete nice_cks collection if it exists
-
-client.delete_collection("nice_cks")
-print("deleted collection nice_cks if it exists")
+# # delete nice_cks collection if it exists
+# client.delete_collection("nice_cks")
+# print("deleted collection nice_cks if it exists")
 
 vector_collection = client.get_or_create_collection("nice_cks")
 cursor = collection.find({})
