@@ -3,7 +3,7 @@ from chromadb.config import Settings
 from dotenv import load_dotenv
 import os 
 from llamaapi import LlamaAPI
-from langchain_experimental.llms import ChatLlamaAPI
+# from langchain import ChatLlamaAPI
 from langchain.schema import StrOutputParser
 from langchain.vectorstores.chroma import Chroma
 from langchain.schema.runnable import RunnablePassthrough
@@ -32,7 +32,7 @@ print("current ip:", requests.get("https://ifconfig.me").text)
 # choose language model
 llama_key = os.environ["LLAMA_API_KEY"]
 llama = LlamaAPI(llama_key)
-llm = ChatLlamaAPI(client=llama, temperature=0.1)
+# llm = ChatLlamaAPI(client=llama, temperature=0.1)
 # llm = ChatOpenAI(temperature=0.1)
 google_key = os.environ["GOOGLE_API_KEY"]
 llm = GoogleGenerativeAI(model="gemini-1.0-pro", api_key=google_key, temperature=0.1)
