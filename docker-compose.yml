@@ -1,7 +1,7 @@
 version: "3.0"
 services:
-  QA:
-    container_name: QA
+  qa:
+    container_name: qa
     build: .
     ports:
       - "8001:8001"

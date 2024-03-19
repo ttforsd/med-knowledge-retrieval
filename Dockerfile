@@ -4,7 +4,7 @@ FROM python:3.11-slim-bullseye
 WORKDIR /app
 
 # Path: COPY
-COPY requirements.txt .
+COPY requirement.txt .
 
 # Path: RUN
 RUN pip install -r requirement.txt
