@@ -13,4 +13,4 @@ RUN pip install -r requirement.txt
 COPY . .
 
 # Path: CMD streamlit 
-CMD ["streamlit", "run", "app.py", "--server.port", "8001"]
+CMD ["streamlit", "run", "web.py", "--server.port", "8001"]
