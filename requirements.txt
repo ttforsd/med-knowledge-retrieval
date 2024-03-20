@@ -1,0 +1,12 @@
+beautifulsoup4==4.12.3
+chromadb==0.4.18
+langchain==0.1.12
+langchain_google_genai==0.0.11
+llamaapi==0.1.36
+markdownify==0.11.6
+pymongo==4.6.1
+python-dotenv==1.0.1
+Requests==2.31.0
+Scrapy==2.11.0
+streamlit==1.29.0
+tiktoken==0.5.2
