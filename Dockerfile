@@ -4,10 +4,10 @@ FROM python:3.10-slim-bullseye
 WORKDIR /app
 
 # Path: COPY
-COPY requirement.txt .
+COPY requirements.txt .
 
 # Path: RUN
-RUN pip install -r requirement.txt
+RUN pip install -r requirements.txt
 
 # Path: COPY
 COPY . .
