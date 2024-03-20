@@ -42,6 +42,7 @@ chromadb_port = os.environ["CHROMA_DB_PORT"]
 
 template = """Use the following pieces of context to answer the question at the end. 
 The target audience for the answer is a healthcare professional.
+Include drug names and procedures where applicable in the answer.
 If you don't know the answer, just say that you don't know, don't try to make up an answer. 
 Do not use any other sources of information to answer the question.
 Answer need to be comprehensive and detailed, yet easy to read.
