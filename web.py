@@ -8,12 +8,13 @@ llama = LlamaAPI(llama_key)
 # llm = ChatLlamaAPI(client=llama, temperature=0.1, model="llama-70b-chat")
 llm = GoogleGenerativeAI(model="gemini-1.0-pro", api_key=google_key)
 
-st.title('Nice CKS Question Answering')
+st.title('Nice CKS AI powered knowledge retrieval system')
 
-st.write("This is a question answering system for the National Institute for Health and Care Excellence (NICE) Clinical Knowledge Summaries (CKS).")
+st.write("This is an AI powered knowledge retrieval system based on the National Institute for Health and Care Excellence (NICE) Clinical Knowledge Summaries (CKS).")
+st.write("Please do not use this system for medical advice. Always consult a healthcare professional for medical advice.")
 
 with st.form(key='my_form'): 
-    question = st.text_input(label='Enter your question here')
+    question = st.text_input(label='Question:')
     submit_button = st.form_submit_button(label='Submit')
 
     if submit_button:
