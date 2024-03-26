@@ -9,7 +9,7 @@ llama = LlamaAPI(llama_key)
 llm = GoogleGenerativeAI(model="gemini-1.0-pro", api_key=google_key)
 
 # set custom title
-st.set_page_config(page_title="Medibot", page_icon=":robot:", layout="wide")
+st.set_page_config(page_title="Medibot", page_icon=":robot:")
 
 st.title('Nice CKS AI powered knowledge retrieval system')
 cks_url = "https://cks.nice.org.uk/"
