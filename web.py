@@ -1,6 +1,9 @@
 import streamlit as st
 from query import * 
 
+# set custom title
+st.set_page_config(page_title="Medibot", page_icon="🤖")
+
 # specify model 
 llama_key = os.environ["LLAMA_API_KEY"]
 google_key = os.environ["GOOGLE_API_KEY"]
@@ -8,8 +11,7 @@ llama = LlamaAPI(llama_key)
 # llm = ChatLlamaAPI(client=llama, temperature=0.1, model="llama-70b-chat")
 llm = GoogleGenerativeAI(model="gemini-1.0-pro", api_key=google_key)
 
-# set custom title
-st.set_page_config(page_title="Medibot", page_icon=":robot:")
+
 
 st.title('Nice CKS AI powered knowledge retrieval system')
 cks_url = "https://cks.nice.org.uk/"
